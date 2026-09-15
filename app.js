@@ -6,7 +6,7 @@ const state = {
   query: "",
   category: "",
   language: "",
-  sort: "title",
+  sort: "year-desc",
   page: 1,
 };
 
@@ -34,7 +34,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     if (!response.ok) throw new Error(`HTTP ${response.status}`);
     const data = await response.json();
     state.books = data.books.map((row, index) => ({ row, index, search: makeSearchText(row) }));
-    setOverview(data);
     populateFilters();
     restoreUrlState();
     applyFilters();
@@ -105,14 +104,6 @@ function normalize(value) {
 
 function naturalCompare(a, b) {
   return normalize(a).localeCompare(normalize(b), "nl", { numeric: true, sensitivity: "base" });
-}
-
-function setOverview(data) {
-  const categories = new Set(state.books.map(({ row }) => normalize(row[fields.category])).filter(Boolean));
-  const years = state.books.map(({ row }) => Number(row[fields.year])).filter((year) => year >= 1000 && year <= new Date().getFullYear());
-  document.getElementById("book-count").textContent = new Intl.NumberFormat("nl-BE").format(data.rows);
-  document.getElementById("category-count").textContent = categories.size;
-  document.getElementById("year-range").textContent = years.length ? `${Math.min(...years)}—${Math.max(...years)}` : "—";
 }
 
 function populateFilters() {
@@ -285,14 +276,14 @@ function showDetails(index) {
 }
 
 function hasFilters() {
-  return Boolean(state.query || state.category || state.language || state.sort !== "title");
+  return Boolean(state.query || state.category || state.language || state.sort !== "year-desc");
 }
 
 function clearFilters() {
-  Object.assign(state, { query: "", category: "", language: "", sort: "title", page: 1 });
+  Object.assign(state, { query: "", category: "", language: "", sort: "year-desc", page: 1 });
   el.search.value = "";
   ["category", "language"].forEach((key) => { el[key].value = ""; });
-  el.sort.value = "title";
+  el.sort.value = "year-desc";
   applyFilters();
 }
 
@@ -301,7 +292,7 @@ function syncUrl() {
   if (state.query) params.set("q", state.query);
   if (state.category) params.set("categorie", state.category);
   if (state.language) params.set("taal", state.language);
-  if (state.sort !== "title") params.set("sort", state.sort);
+  if (state.sort !== "year-desc") params.set("sort", state.sort);
   const url = `${location.pathname}${params.size ? `?${params}` : ""}${location.hash}`;
   history.replaceState(null, "", url);
 }
@@ -311,10 +302,10 @@ function restoreUrlState() {
   state.query = params.get("q") || "";
   state.category = params.get("categorie") || "";
   state.language = params.get("taal") || "";
-  state.sort = params.get("sort") || "title";
+  state.sort = params.get("sort") || "year-desc";
   el.search.value = state.query;
   ["category", "language", "sort"].forEach((key) => {
     if ([...el[key].options].some((option) => option.value === state[key])) el[key].value = state[key];
-    else state[key] = key === "sort" ? "title" : "";
+    else state[key] = key === "sort" ? "year-desc" : "";
   });
 }

@@ -12,35 +12,10 @@
     <script src="app.js" defer></script>
   </head>
   <body>
-    <header class="hero">
-      <nav class="nav wrap" aria-label="Hoofdnavigatie">
-        <a class="brand" href="./" aria-label="NBS Bibliotheek home">
-          <span class="brand-mark" aria-hidden="true">NBS</span>
-          <span>Bibliotheek</span>
-        </a>
-        <a class="nav-link" href="#collectie">Bekijk de collectie <span aria-hidden="true">↓</span></a>
-      </nav>
-
-      <div class="hero-content wrap">
-        <p class="eyebrow">Historische vakbibliotheek</p>
-        <h1>Kennis om in<br /><em>te bladeren.</em></h1>
-        <p class="intro">Ontdek boeken en tijdschriften over landbouw, tuinbouw, natuur en maatschappij uit onze collectie.</p>
-        <div class="hero-stats" aria-label="Collectie in cijfers">
-          <div><strong id="book-count">—</strong><span>werken</span></div>
-          <div><strong id="category-count">—</strong><span>categorieën</span></div>
-          <div><strong id="year-range">—</strong><span>jaarbereik</span></div>
-        </div>
-      </div>
-      <div class="hero-orbit orbit-one" aria-hidden="true"></div>
-      <div class="hero-orbit orbit-two" aria-hidden="true"></div>
-      <div class="page-tab" aria-hidden="true"><span>CATALOGUS</span></div>
-    </header>
-
     <main id="collectie" class="catalogue wrap">
       <div class="section-heading">
         <div>
-          <p class="eyebrow">De catalogus</p>
-          <h2>Vind een werk</h2>
+          <h1>Doorzoek de collectie</h1>
         </div>
         <p id="result-summary" class="result-summary" aria-live="polite">Collectie laden…</p>
       </div>
@@ -59,7 +34,7 @@
           <label>Sorteren<select id="sort">
             <option value="title">Titel A–Z</option>
             <option value="author">Auteur A–Z</option>
-            <option value="year-desc">Jaar: nieuw–oud</option>
+            <option value="year-desc" selected>Jaar: nieuw–oud</option>
             <option value="year-asc">Jaar: oud–nieuw</option>
           </select></label>
           <button id="clear-filters" class="clear-button" type="button">Wis filters</button>
@@ -78,14 +53,6 @@
 
       <nav id="pagination" class="pagination" aria-label="Paginering"></nav>
     </main>
-
-    <footer>
-      <div class="wrap footer-inner">
-        <div class="brand footer-brand"><span class="brand-mark">NBS</span><span>Bibliotheek</span></div>
-        <p>Een doorzoekbare blik in onze collectie.</p>
-        <a href="#collectie">Terug naar boven ↑</a>
-      </div>
-    </footer>
 
     <dialog id="book-dialog" aria-labelledby="dialog-title">
       <button class="dialog-close" type="button" aria-label="Sluiten">×</button>
