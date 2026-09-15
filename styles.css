@@ -2,9 +2,9 @@
   --ink: #18352c;
   --forest: #224b3d;
   --forest-light: #2e6250;
-  --paper: #f6f1e7;
+  --paper: #ffffff;
   --paper-deep: #e9dfcf;
-  --cream: #fffdf8;
+  --cream: #ffffff;
   --rust: #c85d3f;
   --gold: #d9a441;
   --muted: #6b746d;
@@ -14,7 +14,7 @@
 }
 
 * { box-sizing: border-box; }
-html { scroll-behavior: smooth; }
+html { scroll-behavior: smooth; background: #fff; }
 body { margin: 0; color: var(--ink); background: var(--paper); font-family: var(--sans); }
 button, input, select { font: inherit; }
 button, select { cursor: pointer; }
