@@ -38,10 +38,16 @@ document.addEventListener("DOMContentLoaded", () => {
     applyFilters();
   } catch (error) {
     console.error(error);
-    el.results.innerHTML = '<p class="error">De catalogus kon niet worden geladen. Probeer de pagina opnieuw te openen.</p>';
-    el["result-summary"].textContent = "Laden mislukt";
+    showCatalogError();
   }
 });
+
+function showCatalogError() {
+  if (el.results) {
+    el.results.innerHTML = '<p class="error">De catalogus kon niet worden geladen. Probeer de pagina opnieuw te openen.</p>';
+  }
+  if (el["result-summary"]) el["result-summary"].textContent = "Laden mislukt";
+}
 
 function bindEvents() {
   let timer;
@@ -166,10 +172,12 @@ function render() {
   renderBooks(state.filtered.slice(start, start + PAGE_SIZE));
   renderPagination(pages);
   renderActiveFilters();
-  el["empty-state"].hidden = total !== 0;
+  if (el["empty-state"]) el["empty-state"].hidden = total !== 0;
   el.results.hidden = total === 0;
-  el["result-summary"].innerHTML = `<strong>${new Intl.NumberFormat("nl-BE").format(total)}</strong> ${total === 1 ? "werk" : "werken"} gevonden`;
-  el["clear-filters"].disabled = !hasFilters();
+  if (el["result-summary"]) {
+    el["result-summary"].innerHTML = `<strong>${new Intl.NumberFormat("nl-BE").format(total)}</strong> ${total === 1 ? "werk" : "werken"} gevonden`;
+  }
+  if (el["clear-filters"]) el["clear-filters"].disabled = !hasFilters();
 }
 
 function renderBooks(books) {
@@ -293,7 +301,12 @@ function syncUrl() {
   if (state.language) params.set("taal", state.language);
   if (state.sort !== "year-desc") params.set("sort", state.sort);
   const url = `${location.pathname}${params.size ? `?${params}` : ""}${location.hash}`;
-  history.replaceState(null, "", url);
+  try {
+    history.replaceState(null, "", url);
+  } catch (error) {
+    // Sandboxed iframes can deny History API writes. Filtering still works.
+    console.debug("URL kon niet worden bijgewerkt in deze iframe.", error);
+  }
 }
 
 function restoreUrlState() {
