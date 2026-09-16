@@ -1,7 +1,7 @@
 # NBS Bibliotheek
 
 Een kleine, statische cataloguswebsite voor GitHub Pages. De website leest de
-gegenereerde data uit `data/books.json` en heeft geen server of buildstap nodig.
+gegenereerde data uit `data/books.js` en heeft geen server of buildstap nodig.
 
 ## Publiceren met GitHub Pages
 
@@ -20,13 +20,13 @@ python export_books.py
 ```
 
 Het exportscript leest `Bibliotheek_Lijst_Michel.xlsx`, neemt uitsluitend de
-zichtbare kolommen op en vervangt `data/books.json`. Verborgen kolommen komen
+zichtbare kolommen op en vervangt `data/books.json` en `data/books.js`. Verborgen kolommen komen
 daarom ook niet terecht in zoeken of details. Commit daarna het nieuwe
 JSON-bestand en het Excel-bestand.
 
 ## Lokaal bekijken
 
-Door de browserbeveiliging moet de JSON via een lokale webserver worden geladen:
+Je kunt de website rechtstreeks openen of via een lokale webserver bekijken:
 
 ```powershell
 python -m http.server 8000

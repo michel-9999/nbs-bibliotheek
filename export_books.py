@@ -15,7 +15,8 @@ from openpyxl import load_workbook
 
 ROOT = Path(__file__).resolve().parent
 SOURCE = ROOT / "Bibliotheek_Lijst_Michel.xlsx"
-DESTINATION = ROOT / "data" / "books.json"
+JSON_DESTINATION = ROOT / "data" / "books.json"
+SCRIPT_DESTINATION = ROOT / "data" / "books.js"
 
 
 def clean(value):
@@ -51,9 +52,14 @@ def main() -> None:
         "hiddenColumnsExcluded": sheet.max_column - len(visible_columns),
         "books": rows,
     }
-    DESTINATION.parent.mkdir(exist_ok=True)
-    DESTINATION.write_text(
-        json.dumps(payload, ensure_ascii=False, separators=(",", ":")),
+    JSON_DESTINATION.parent.mkdir(exist_ok=True)
+    serialized = json.dumps(payload, ensure_ascii=False, separators=(",", ":"))
+    JSON_DESTINATION.write_text(serialized, encoding="utf-8")
+    # A classic script is more robust than fetch() when the site is embedded in
+    # a sandboxed third-party iframe. Escape the two JavaScript line separators.
+    script_data = serialized.replace("\u2028", "\\u2028").replace("\u2029", "\\u2029")
+    SCRIPT_DESTINATION.write_text(
+        f"globalThis.BOOK_CATALOG={script_data};\n",
         encoding="utf-8",
     )
     print(

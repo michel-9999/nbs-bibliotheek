@@ -24,15 +24,14 @@ const fields = {
 
 const el = {};
 
-document.addEventListener("DOMContentLoaded", async () => {
+document.addEventListener("DOMContentLoaded", () => {
   ["search", "category", "language", "sort", "results", "result-summary", "pagination", "active-filters", "empty-state", "clear-filters", "book-dialog", "dialog-content"]
     .forEach((id) => { el[id] = document.getElementById(id); });
 
   bindEvents();
   try {
-    const response = await fetch("data/books.json");
-    if (!response.ok) throw new Error(`HTTP ${response.status}`);
-    const data = await response.json();
+    const data = globalThis.BOOK_CATALOG;
+    if (!data?.books) throw new Error("Catalogusgegevens ontbreken");
     state.books = data.books.map((row, index) => ({ row, index, search: makeSearchText(row) }));
     populateFilters();
     restoreUrlState();
